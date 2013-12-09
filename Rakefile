@@ -15,7 +15,7 @@ begin
 
   RSpec::Core::RakeTask.new(:spec)
   task :spec => :environment
-rescue
+rescue LoadError
   # install rspec to run specs
 end
 
