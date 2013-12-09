@@ -1,0 +1,15 @@
+#!/usr/bin/env ruby
+
+ENV["RACK_ENV"] = ARGV.pop || "development"
+
+$:.unshift File.expand_path("../../lib", __FILE__)
+
+require File.expand_path("../../application", __FILE__)
+
+env = Sinatra::Application.settings.environment
+puts "Loaded #{env} environment (Sinatra #{Sinatra::VERSION})"
+
+require "irb"
+require "irb/completion"
+
+IRB.start
