@@ -1,8 +1,6 @@
 require "rubygems"
 require "bundler/setup"
 
-require "rspec/core/rake_task"
-
 # The :environment task loads the application, models etc.
 # Require it whenever you need to work with application classes.
 
@@ -12,8 +10,14 @@ end
 
 # Test-related tasks.
 
-RSpec::Core::RakeTask.new(:spec)
-task :spec => :environment
+begin
+  require "rspec/core/rake_task"
+
+  RSpec::Core::RakeTask.new(:spec)
+  task :spec => :environment
+rescue
+  # install rspec to run specs
+end
 
 # Define a default task.
 
