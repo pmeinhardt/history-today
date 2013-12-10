@@ -9,7 +9,8 @@ get "/" do
 end
 
 get "/today.json" do
-  sparql = SPARQL::Client.new("http://dbpedia.org/sparql")
+  sparql = SPARQL::Client.new("http://live.dbpedia.org/sparql")
+  # or: sparql = SPARQL::Client.new("http://dbpedia.org/sparql")
 
   offset = params[:offset] || 0
 
