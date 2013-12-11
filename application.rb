@@ -37,14 +37,14 @@ get "/today.json" do
       ?subject rdfs:subClassOf*/rdf:type ?domain ;
         ?prop ?date .
 
+      FILTER (bif:substring(str(?date), 6, 5) = bif:substring(str(now()), 6, 5))
+
       OPTIONAL {
         ?subject rdfs:label ?name ;
           foaf:isPrimaryTopicOf ?article .
 
         FILTER (lang(?name) = "en")
       }
-
-      FILTER (bif:substring(str(?date), 6, 5) = bif:substring(str(now()), 6, 5))
     }
     OFFSET #{offset}
     LIMIT 100
