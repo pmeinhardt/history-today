@@ -1,7 +1,7 @@
 (function() {
   var module = angular.module('app.controllers', []);
 
-  var TodayCtl = function($scope, $http, $timeout) {
+  var TodayCtl = function($scope, $http, $timeout, $interval) {
     // loads more entries
     $scope.fetch = function() {
       var query = $http.get('/today.json', {
@@ -31,11 +31,23 @@
     $scope.offset  = 0;
     $scope.limit   = 100;
 
+    $scope.date    = new Date();
+    $scope.expired = false;
+
     // fetch initial results
     $timeout($scope.fetch);
+
+    // check whether date still is "today"
+    $interval(function() {
+      var now = new Date(),
+          d = $scope.date;
+      $scope.expired =
+        (d.getDate() != now.getDate()) ||
+        (d.getMonth() != now.getMonth());
+    }, 1000);
   };
 
-  TodayCtl.$inject = ['$scope', '$http', '$timeout'];
+  TodayCtl.$inject = ['$scope', '$http', '$timeout', '$interval'];
 
   module.controller('TodayCtl', TodayCtl);
 })();
