@@ -12,7 +12,7 @@
 
       query.success(function(data, status) {
         $scope.more    = (data.length == $scope.limit);
-        $scope.offset  = $scope.offset + $scope.limit;
+        $scope.offset  = $scope.offset + data.length;
         $scope.loading = false;
         $scope.rows    = $scope.rows.concat(data);
       });
