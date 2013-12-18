@@ -8,16 +8,17 @@ get "/" do
   erb :index
 end
 
-get "/today.json" do
+get "/day.json" do
   sparql = SPARQL::Client.new("http://live.dbpedia.org/sparql")
   # or: sparql = SPARQL::Client.new("http://dbpedia.org/sparql")
 
-  offset = params[:offset] || 0
+  datestr = params[:date]   || Time.now.strftime("%Y-%m-%d")
+  offset  = params[:offset] || 0
 
   rows = sparql.query(%{
     PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
     PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-    PREFIX owl: <http://www.w3.org/2002/07/owl#>
+    PREFIX owl:  <http://www.w3.org/2002/07/owl#>
     PREFIX dbp:  <http://dbpedia.org/resource/>
     PREFIX dbo:  <http://dbpedia.org/ontology/>
     PREFIX dbpp: <http://dbpedia.org/property/>
@@ -37,7 +38,8 @@ get "/today.json" do
       ?subject rdfs:subClassOf*/rdf:type ?domain ;
         ?prop ?date .
 
-      FILTER (bif:substring(str(?date), 6, 5) = bif:substring(str(now()), 6, 5))
+      FILTER (bif:substring(str(?date), 6, 5) =
+        bif:substring(#{datestr.inspect}, 6, 5))
 
       OPTIONAL {
         ?subject rdfs:label ?name ;

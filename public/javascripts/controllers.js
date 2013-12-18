@@ -1,11 +1,13 @@
 (function() {
   var module = angular.module('app.controllers', []);
 
-  var TodayCtl = function($scope, $http, $timeout, $interval) {
+  var TodayCtl = function($scope, $filter, $http, $timeout, $interval) {
     // loads more entries
     $scope.fetch = function() {
-      var query = $http.get('/today.json', {
-        params: { offset: $scope.offset }
+      var datestr = $filter('date')($scope.date, 'yyyy-MM-dd');
+
+      var query = $http.get('/day.json', {
+        params: { date: datestr, offset: $scope.offset }
       });
 
       $scope.loading = true;
@@ -47,7 +49,7 @@
     }, 1000);
   };
 
-  TodayCtl.$inject = ['$scope', '$http', '$timeout', '$interval'];
+  TodayCtl.$inject = ['$scope', '$filter', '$http', '$timeout', '$interval'];
 
   module.controller('TodayCtl', TodayCtl);
 })();
